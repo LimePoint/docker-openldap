@@ -534,17 +534,17 @@ EOF
   #
   # ldap client config
   #
-  if [ "${LDAP_TLS,,}" == "true" ]; then
-    log-helper info "Configure ldap client TLS configuration..."
-    sed -i --follow-symlinks "s,TLS_CACERT.*,TLS_CACERT ${LDAP_TLS_CA_CRT_PATH},g" /etc/ldap/ldap.conf
-    echo "TLS_REQCERT ${LDAP_TLS_VERIFY_CLIENT}" >> /etc/ldap/ldap.conf
-    cp -f /etc/ldap/ldap.conf ${CONTAINER_SERVICE_DIR}/slapd/assets/ldap.conf
-
-    [[ -f "$HOME/.ldaprc" ]] && rm -f $HOME/.ldaprc
-    echo "TLS_CERT ${LDAP_TLS_CRT_PATH}" > $HOME/.ldaprc
-    echo "TLS_KEY ${LDAP_TLS_KEY_PATH}" >> $HOME/.ldaprc
-    cp -f $HOME/.ldaprc ${CONTAINER_SERVICE_DIR}/slapd/assets/.ldaprc
-  fi
+#  if [ "${LDAP_TLS,,}" == "true" ]; then
+#    log-helper info "Configure ldap client TLS configuration..."
+#    sed -i --follow-symlinks "s,TLS_CACERT.*,TLS_CACERT ${LDAP_TLS_CA_CRT_PATH},g" /etc/ldap/ldap.conf
+#    echo "TLS_REQCERT ${LDAP_TLS_VERIFY_CLIENT}" >> /etc/ldap/ldap.conf
+#    cp -f /etc/ldap/ldap.conf ${CONTAINER_SERVICE_DIR}/slapd/assets/ldap.conf
+#
+#    [[ -f "$HOME/.ldaprc" ]] && rm -f $HOME/.ldaprc
+#    echo "TLS_CERT ${LDAP_TLS_CRT_PATH}" > $HOME/.ldaprc
+#    echo "TLS_KEY ${LDAP_TLS_KEY_PATH}" >> $HOME/.ldaprc
+#    cp -f $HOME/.ldaprc ${CONTAINER_SERVICE_DIR}/slapd/assets/.ldaprc
+#  fi
 
   #
   # remove container config files
@@ -561,8 +561,8 @@ EOF
   touch $FIRST_START_DONE
 fi
 
-ln -sf ${CONTAINER_SERVICE_DIR}/slapd/assets/.ldaprc $HOME/.ldaprc
-ln -sf ${CONTAINER_SERVICE_DIR}/slapd/assets/ldap.conf /etc/ldap/ldap.conf
+#ln -sf ${CONTAINER_SERVICE_DIR}/slapd/assets/.ldaprc $HOME/.ldaprc
+#ln -sf ${CONTAINER_SERVICE_DIR}/slapd/assets/ldap.conf /etc/ldap/ldap.conf
 
 # force OpenLDAP to listen on all interfaces
 # We need to make sure that /etc/hosts continues to include the
