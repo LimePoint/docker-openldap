@@ -24,7 +24,7 @@ for schema in ${SCHEMAS} ; do
     echo "include ${schema}" >> convert.dat
 done
 
-slaptest -f convert.dat -F .
+mkdir ldif && slaptest -f convert.dat -F ldif
 
 if [ $? -ne 0 ] ; then
     log-helper error "slaptest conversion failed"

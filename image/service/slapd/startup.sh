@@ -73,6 +73,7 @@ log-helper info "-------------------------------------"
 # fix file permissions
 if [ "${DISABLE_CHOWN,,}" == "false" ]; then
   log-helper info "updating file uid/gid ownership"
+  mkdir -p /var/run/slapd
   chown -R openldap:openldap /var/run/slapd
   chown -R openldap:openldap /var/lib/ldap
   chown -R openldap:openldap /etc/ldap
@@ -303,6 +304,12 @@ EOF
       fi
     fi
 
+    if grep -q "^olcTLSCipherSuite: " /etc/ldap/slapd.d/cn=config.ldif 2>/dev/null; then
+      log-helper info "Update stored TLS cipher suite..."
+      printf 'dn: cn=config\nchangetype: modify\nreplace: olcTLSCipherSuite\nolcTLSCipherSuite: %s\n' "$LDAP_TLS_CIPHER_SUITE" | slapmodify -F /etc/ldap/slapd.d -n 0
+      chown -R openldap:openldap /etc/ldap/slapd.d
+    fi
+
     # start OpenLDAP
     log-helper info "Start OpenLDAP..."
     # At this stage, we can just listen to ldap:// and ldap:// without naming any names
@@ -322,9 +329,6 @@ EOF
     if $BOOTSTRAP; then
 
       log-helper info "Add bootstrap schemas..."
-
-      # add ppolicy schema
-      ldapadd -c -Y EXTERNAL -Q -H ldapi:/// -f /etc/ldap/schema/ppolicy.ldif 2>&1 | log-helper debug
 
       # convert schemas to ldif
       SCHEMAS=""

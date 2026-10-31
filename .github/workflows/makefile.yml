@@ -2,7 +2,7 @@ name: Makefile CI
 
 on:
   push:
-    branches: [ "bullseye-opschain" ]
+    branches: [ "trixie-opschain" ]
 
 jobs:
   build:

@@ -1,5 +1,5 @@
 NAME = limepoint/openldap
-VERSION = 1.5.0-opschain-1
+VERSION = 1.5.0-trixie-opschain-1
 
 .PHONY: build build-nocache test tag-latest push push-latest release git-tag-version
 
